@@ -90,7 +90,7 @@ Before you begin, make sure you have the following installed:
 1. **Clone the Repository:**
 
     ```bash
-    git clone https://github.com/AhmedHassan199/task_management_system.git
+    https://github.com/AhmedHassan199/magazine_subscriptions_management.git
     cd task_management_system
     ```
 
