@@ -78,4 +78,38 @@ class CommentController extends Controller
             return ApiResponseHelper::error('Comment not found', $e->getMessage());
         }
     }
+
+
+    public function approveComment($id)
+    {
+        try {
+            $comment = Comment::find($id);
+            if ($comment) {
+                $comment->is_approved = true;
+                $comment->save();
+                return ApiResponseHelper::success('Comment approved successfully', $comment);
+            } else {
+                return ApiResponseHelper::error('Comment not found', 'Comment does not exist.');
+            }
+        } catch (\Exception $e) {
+            return ApiResponseHelper::error('Error approving comment', $e->getMessage());
+        }
+    }
+
+    // Reject a comment
+    public function rejectComment($id)
+    {
+        try {
+            $comment = Comment::find($id);
+            if ($comment) {
+                $comment->is_approved = false;
+                $comment->save();
+                return ApiResponseHelper::success('Comment rejected successfully', $comment);
+            } else {
+                return ApiResponseHelper::error('Comment not found', 'Comment does not exist.');
+            }
+        } catch (\Exception $e) {
+            return ApiResponseHelper::error('Error rejecting comment', $e->getMessage());
+        }
+    }
 }
