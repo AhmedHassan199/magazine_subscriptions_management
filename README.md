@@ -91,7 +91,6 @@ Before you begin, make sure you have the following installed:
 
     ```bash
     https://github.com/AhmedHassan199/magazine_subscriptions_management.git
-    cd task_management_system
     ```
 
 2. **Install Dependencies:**
