@@ -18,7 +18,22 @@ class Payment extends Model
         'payment_date',
         'transaction_id',
     ];
+    protected function getLogName(): string
+    {
+        return 'payment'; // Custom log name for Magazine
+    }
 
+    protected function getLogAttributes(): array
+    {
+        return [
+            'subscription_id',
+            'user_id',
+            'amount',
+            'payment_method',
+            'payment_date',
+            'transaction_id',
+        ];
+    }
     // Relationships
     public function subscription()
     {

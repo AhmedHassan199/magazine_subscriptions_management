@@ -4,10 +4,25 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Subscription extends Model
 {
     use HasFactory;
+    use LogsActivity;
+    protected function getLogName(): string
+    {
+        return 'subscriptions'; // Custom log name for Magazine
+    }
+
+    protected function getLogAttributes(): array
+    {
+        return [
+            'user_id', 'magazine_id', 'start_date', 'end_date', 'status', 'plan_type', 'renewed'
+        ];
+
+    }
 
     // Define the fillable fields for the Subscription model
     protected $fillable = [

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Article extends Model
+class Article extends BaseModel
 {
     use HasFactory;
 
@@ -17,7 +17,21 @@ class Article extends Model
         'publication_date',
         'author_name',
     ];
+    protected function getLogName(): string
+    {
+        return 'article';
+    }
 
+    protected function getLogAttributes(): array
+    {
+        return  [
+            'magazine_id',
+            'title',
+            'content',
+            'publication_date',
+            'author_name',
+        ];
+    }
     // Relationships
     public function magazine()
     {

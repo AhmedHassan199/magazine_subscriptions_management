@@ -48,6 +48,6 @@ Route::middleware('auth:sanctum')->group(function () {
         // View Subscriptions (Admin Overview)
         Route::get('/subscriptions/admin', [SubscriptionController::class, 'adminIndex']);
         Route::post('/comments/{id}/approve', [CommentController::class, 'approveComment']);
-Route::post('/comments/{id}/reject', [CommentController::class, 'rejectComment']);
+        Route::post('/comments/{id}/reject', [CommentController::class, 'rejectComment']);
     });
 });

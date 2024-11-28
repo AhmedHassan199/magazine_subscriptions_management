@@ -16,7 +16,20 @@ class Magazine extends Model
         'release_date',
         'cover_image',
     ];
+    protected function getLogName(): string
+    {
+        return 'magazine';
+    }
 
+    protected function getLogAttributes(): array
+    {
+        return  [
+            'name',
+            'description',
+            'release_date',
+            'cover_image',
+        ];
+    }
     // Relationships
     public function articles()
     {

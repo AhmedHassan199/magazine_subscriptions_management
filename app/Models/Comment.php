@@ -17,7 +17,21 @@ class Comment extends Model
         'is_approved',
         'comment_date',
     ];
+    protected function getLogName(): string
+    {
+        return 'comment'; // Custom log name for Article
+    }
 
+    protected function getLogAttributes(): array
+    {
+        return  [
+            'article_id',
+            'user_id',
+            'content',
+            'is_approved',
+            'comment_date',
+        ];
+    }
     // Relationships
     public function article()
     {
