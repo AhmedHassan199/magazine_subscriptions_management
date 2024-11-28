@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\ArticleService;
 use App\Http\Requests\StoreArticleRequest;
 use App\Helpers\ApiResponseHelper;
+use App\Models\Article; // Import the Article model
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
@@ -18,6 +19,8 @@ class ArticleController extends Controller
 
     public function store(StoreArticleRequest $request)
     {
+        $this->authorize('create', Article::class); // Authorization check
+
         try {
             $article = $this->articleService->create($request->validated());
             return ApiResponseHelper::success('Article created successfully', $article);
@@ -28,9 +31,12 @@ class ArticleController extends Controller
 
     public function update($id, StoreArticleRequest $request)
     {
+        $article = $this->articleService->getById($id);
+        $this->authorize('update', $article); // Authorization check
+
         try {
-            $article = $this->articleService->update($id, $request->validated());
-            return ApiResponseHelper::success('Article updated successfully', $article);
+            $updatedArticle = $this->articleService->update($id, $request->validated());
+            return ApiResponseHelper::success('Article updated successfully', $updatedArticle);
         } catch (\Exception $e) {
             return ApiResponseHelper::error('Error updating article', $e->getMessage());
         }
@@ -38,6 +44,9 @@ class ArticleController extends Controller
 
     public function delete($id)
     {
+        $article = $this->articleService->getById($id);
+        $this->authorize('delete', $article); // Authorization check
+
         try {
             $this->articleService->delete($id);
             return ApiResponseHelper::success('Article deleted successfully');
@@ -48,6 +57,8 @@ class ArticleController extends Controller
 
     public function index()
     {
+        $this->authorize('viewAny', Article::class); // Authorization check
+
         try {
             $articles = $this->articleService->getAll();
             return ApiResponseHelper::success('Articles retrieved successfully', $articles);
@@ -58,8 +69,10 @@ class ArticleController extends Controller
 
     public function show($id)
     {
+        $article = $this->articleService->getById($id);
+        $this->authorize('view', $article); // Authorization check
+
         try {
-            $article = $this->articleService->getById($id);
             return ApiResponseHelper::success('Article retrieved successfully', $article);
         } catch (\Exception $e) {
             return ApiResponseHelper::error('Article not found', $e->getMessage());

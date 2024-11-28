@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\UserService;
 use App\Http\Requests\StoreUserRequest;
 use App\Helpers\ApiResponseHelper;
+use App\Models\User; // Import User model
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -18,6 +19,8 @@ class UserController extends Controller
 
     public function store(StoreUserRequest $request)
     {
+        $this->authorize('create', User::class); // Authorization check
+
         try {
             $user = $this->userService->create($request->validated());
             return ApiResponseHelper::success('User created successfully', $user);
@@ -28,9 +31,12 @@ class UserController extends Controller
 
     public function update($id, StoreUserRequest $request)
     {
+        $user = $this->userService->getById($id);
+        $this->authorize('update', $user); // Authorization check
+
         try {
-            $user = $this->userService->update($id, $request->validated());
-            return ApiResponseHelper::success('User updated successfully', $user);
+            $updatedUser = $this->userService->update($id, $request->validated());
+            return ApiResponseHelper::success('User updated successfully', $updatedUser);
         } catch (\Exception $e) {
             return ApiResponseHelper::error('Error updating user', $e->getMessage());
         }
@@ -38,6 +44,9 @@ class UserController extends Controller
 
     public function delete($id)
     {
+        $user = $this->userService->getById($id);
+        $this->authorize('delete', $user); // Authorization check
+
         try {
             $this->userService->delete($id);
             return ApiResponseHelper::success('User deleted successfully');
@@ -48,6 +57,8 @@ class UserController extends Controller
 
     public function index()
     {
+        $this->authorize('viewAny', User::class); // Authorization check
+
         try {
             $users = $this->userService->getAll();
             return ApiResponseHelper::success('Users retrieved successfully', $users);
@@ -58,8 +69,10 @@ class UserController extends Controller
 
     public function show($id)
     {
+        $user = $this->userService->getById($id);
+        $this->authorize('view', $user); // Authorization check
+
         try {
-            $user = $this->userService->getById($id);
             return ApiResponseHelper::success('User retrieved successfully', $user);
         } catch (\Exception $e) {
             return ApiResponseHelper::error('User not found', $e->getMessage());

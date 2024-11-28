@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\CommentService;
 use App\Http\Requests\StoreCommentRequest;
 use App\Helpers\ApiResponseHelper;
+use App\Models\Comment; // Import the Comment model
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -18,6 +19,8 @@ class CommentController extends Controller
 
     public function store(StoreCommentRequest $request)
     {
+        $this->authorize('create', Comment::class); // Authorization check
+
         try {
             $comment = $this->commentService->create($request->validated());
             return ApiResponseHelper::success('Comment created successfully', $comment);
@@ -28,9 +31,12 @@ class CommentController extends Controller
 
     public function update($id, StoreCommentRequest $request)
     {
+        $comment = $this->commentService->getById($id);
+        $this->authorize('update', $comment); // Authorization check
+
         try {
-            $comment = $this->commentService->update($id, $request->validated());
-            return ApiResponseHelper::success('Comment updated successfully', $comment);
+            $updatedComment = $this->commentService->update($id, $request->validated());
+            return ApiResponseHelper::success('Comment updated successfully', $updatedComment);
         } catch (\Exception $e) {
             return ApiResponseHelper::error('Error updating comment', $e->getMessage());
         }
@@ -38,6 +44,9 @@ class CommentController extends Controller
 
     public function delete($id)
     {
+        $comment = $this->commentService->getById($id);
+        $this->authorize('delete', $comment); // Authorization check
+
         try {
             $this->commentService->delete($id);
             return ApiResponseHelper::success('Comment deleted successfully');
@@ -48,6 +57,8 @@ class CommentController extends Controller
 
     public function index()
     {
+        $this->authorize('viewAny', Comment::class); // Authorization check
+
         try {
             $comments = $this->commentService->getAll();
             return ApiResponseHelper::success('Comments retrieved successfully', $comments);
@@ -58,8 +69,10 @@ class CommentController extends Controller
 
     public function show($id)
     {
+        $comment = $this->commentService->getById($id);
+        $this->authorize('view', $comment); // Authorization check
+
         try {
-            $comment = $this->commentService->getById($id);
             return ApiResponseHelper::success('Comment retrieved successfully', $comment);
         } catch (\Exception $e) {
             return ApiResponseHelper::error('Comment not found', $e->getMessage());

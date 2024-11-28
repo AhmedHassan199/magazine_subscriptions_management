@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\PaymentService;
 use App\Http\Requests\StorePaymentRequest;
 use App\Helpers\ApiResponseHelper;
+use App\Models\Payment; // Import the Payment model
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller
@@ -18,6 +19,8 @@ class PaymentController extends Controller
 
     public function store(StorePaymentRequest $request)
     {
+        $this->authorize('create', Payment::class); // Authorization check
+
         try {
             $payment = $this->paymentService->create($request->validated());
             return ApiResponseHelper::success('Payment created successfully', $payment);
@@ -28,9 +31,12 @@ class PaymentController extends Controller
 
     public function update($id, StorePaymentRequest $request)
     {
+        $payment = $this->paymentService->getById($id);
+        $this->authorize('update', $payment); // Authorization check
+
         try {
-            $payment = $this->paymentService->update($id, $request->validated());
-            return ApiResponseHelper::success('Payment updated successfully', $payment);
+            $updatedPayment = $this->paymentService->update($id, $request->validated());
+            return ApiResponseHelper::success('Payment updated successfully', $updatedPayment);
         } catch (\Exception $e) {
             return ApiResponseHelper::error('Error updating payment', $e->getMessage());
         }
@@ -38,6 +44,9 @@ class PaymentController extends Controller
 
     public function delete($id)
     {
+        $payment = $this->paymentService->getById($id);
+        $this->authorize('delete', $payment); // Authorization check
+
         try {
             $this->paymentService->delete($id);
             return ApiResponseHelper::success('Payment deleted successfully');
@@ -48,6 +57,8 @@ class PaymentController extends Controller
 
     public function index()
     {
+        $this->authorize('viewAny', Payment::class); // Authorization check
+
         try {
             $payments = $this->paymentService->getAll();
             return ApiResponseHelper::success('Payments retrieved successfully', $payments);
@@ -58,8 +69,10 @@ class PaymentController extends Controller
 
     public function show($id)
     {
+        $payment = $this->paymentService->getById($id);
+        $this->authorize('view', $payment); // Authorization check
+
         try {
-            $payment = $this->paymentService->getById($id);
             return ApiResponseHelper::success('Payment retrieved successfully', $payment);
         } catch (\Exception $e) {
             return ApiResponseHelper::error('Payment not found', $e->getMessage());
