@@ -2,63 +2,67 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\CommentService;
+use App\Http\Requests\StoreCommentRequest;
+use App\Helpers\ApiResponseHelper;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected $commentService;
+
+    public function __construct(CommentService $commentService)
+    {
+        $this->commentService = $commentService;
+    }
+
+    public function store(StoreCommentRequest $request)
+    {
+        try {
+            $comment = $this->commentService->create($request->validated());
+            return ApiResponseHelper::success('Comment created successfully', $comment);
+        } catch (\Exception $e) {
+            return ApiResponseHelper::error('Error creating comment', $e->getMessage());
+        }
+    }
+
+    public function update($id, StoreCommentRequest $request)
+    {
+        try {
+            $comment = $this->commentService->update($id, $request->validated());
+            return ApiResponseHelper::success('Comment updated successfully', $comment);
+        } catch (\Exception $e) {
+            return ApiResponseHelper::error('Error updating comment', $e->getMessage());
+        }
+    }
+
+    public function delete($id)
+    {
+        try {
+            $this->commentService->delete($id);
+            return ApiResponseHelper::success('Comment deleted successfully');
+        } catch (\Exception $e) {
+            return ApiResponseHelper::error('Error deleting comment', $e->getMessage());
+        }
+    }
+
     public function index()
     {
-        //
+        try {
+            $comments = $this->commentService->getAll();
+            return ApiResponseHelper::success('Comments retrieved successfully', $comments);
+        } catch (\Exception $e) {
+            return ApiResponseHelper::error('Error fetching comments', $e->getMessage());
+        }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function show($id)
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        try {
+            $comment = $this->commentService->getById($id);
+            return ApiResponseHelper::success('Comment retrieved successfully', $comment);
+        } catch (\Exception $e) {
+            return ApiResponseHelper::error('Comment not found', $e->getMessage());
+        }
     }
 }

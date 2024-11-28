@@ -2,63 +2,67 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\SubscriptionService;
+use App\Http\Requests\StoreSubscriptionRequest;
+use App\Helpers\ApiResponseHelper;
 use Illuminate\Http\Request;
 
 class SubscriptionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected $subscriptionService;
+
+    public function __construct(SubscriptionService $subscriptionService)
+    {
+        $this->subscriptionService = $subscriptionService;
+    }
+
+    public function store(StoreSubscriptionRequest $request)
+    {
+        try {
+            $subscription = $this->subscriptionService->create($request->validated());
+            return ApiResponseHelper::success('Subscription created successfully', $subscription);
+        } catch (\Exception $e) {
+            return ApiResponseHelper::error('Error creating subscription', $e->getMessage());
+        }
+    }
+
+    public function update($id, StoreSubscriptionRequest $request)
+    {
+        try {
+            $subscription = $this->subscriptionService->update($id, $request->validated());
+            return ApiResponseHelper::success('Subscription updated successfully', $subscription);
+        } catch (\Exception $e) {
+            return ApiResponseHelper::error('Error updating subscription', $e->getMessage());
+        }
+    }
+
+    public function delete($id)
+    {
+        try {
+            $this->subscriptionService->delete($id);
+            return ApiResponseHelper::success('Subscription deleted successfully');
+        } catch (\Exception $e) {
+            return ApiResponseHelper::error('Error deleting subscription', $e->getMessage());
+        }
+    }
+
     public function index()
     {
-        //
+        try {
+            $subscriptions = $this->subscriptionService->getAll();
+            return ApiResponseHelper::success('Subscriptions retrieved successfully', $subscriptions);
+        } catch (\Exception $e) {
+            return ApiResponseHelper::error('Error fetching subscriptions', $e->getMessage());
+        }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function show($id)
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        try {
+            $subscription = $this->subscriptionService->getById($id);
+            return ApiResponseHelper::success('Subscription retrieved successfully', $subscription);
+        } catch (\Exception $e) {
+            return ApiResponseHelper::error('Subscription not found', $e->getMessage());
+        }
     }
 }
