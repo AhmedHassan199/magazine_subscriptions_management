@@ -1,67 +1,124 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Magazine Management System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Features
 
-## About Laravel
+### 1. User Authentication
+- **Register & Login:** Users can register and log in using token-based authentication via Laravel Sanctum.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### 2. Roles and Permissions
+- **Users:**
+  - View magazines, articles, and subscriptions.
+  - Create and manage comments on articles.
+  
+- **Magazines:**
+  - Viewable by users based on their access level.
+  - Managed by publishers or administrators.
+  
+- **Subscriptions:**
+  - Users can subscribe to magazines and manage subscription status.
+  - Admins can view and manage all subscriptions.
+  
+- **Payments:**
+  - Users can make payments for their subscriptions.
+  - Admins can view and manage payment records.
+  
+- **Articles:**
+  - Users can view, create, and update articles.
+  - Admins can approve or reject articles.
+  
+- **Comments:**
+  - Users can comment on articles.
+  - Admins can approve or reject comments.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 3. Database Models (Eloquent Models)
+- Each resource (users, magazines, subscriptions, payments, articles, comments) has a corresponding Eloquent model.
+- **Relationships:**
+  - Magazines -> Articles (One-to-Many)
+  - Users -> Subscriptions (Many-to-Many)
+  - Subscriptions -> Payments (One-to-Many)
+  - Articles -> Comments (One-to-Many)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 4. Authorization (Policies & Gates)
+- **Publisher:**
+  - Can create and manage magazines, articles, and subscriptions.
+  
+- **Admin:**
+  - Can manage all resources (users, magazines, subscriptions, payments).
+  
+- **User:**
+  - Can view articles, magazines, and manage their subscriptions.
+  - Can comment on articles.
 
-## Learning Laravel
+### 5. Subscription Management
+- Users can subscribe to magazines with options for monthly or yearly plans.
+- Admins manage subscriptions, approve or renew them.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 6. Commenting System
+- Users can comment on articles.
+- Admins moderate comments by approving or rejecting them.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### 7. Task Scheduling
+- Tasks are scheduled for subscription management, payment processing, and other periodic operations.
+- Admins can assign tasks based on user roles.
+- Tasks are logged for tracking and activity history.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 8. Activity Logging
+- All significant actions (e.g., user registration, magazine management, subscription updates) are logged.
+- Logs can be reviewed for auditing and troubleshooting.
 
-## Laravel Sponsors
+### 9. RESTful API
+- **Endpoints:**
+  - Manage magazines, subscriptions, payments, articles, and comments via RESTful API.
+  
+- **Authentication:**
+  - API is secured with Laravel Sanctum for token-based authentication.
+  
+- **Documentation:**
+  - API documentation is available in Postman for easy testing and integration.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
 
-### Premium Partners
+## Prerequisites
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+Before you begin, make sure you have the following installed:
+- PHP >= 8.2
+- Composer
+- Laravel >= 9
+- Postman (for API testing)
 
-## Contributing
+## Setup Instructions
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+1. **Clone the Repository:**
 
-## Code of Conduct
+    ```bash
+    https://github.com/AhmedHassan199/magazine_subscriptions_management.git
+    ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+2. **Install Dependencies:**
 
-## Security Vulnerabilities
+    ```bash
+    composer install
+    ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+3. **Configure Environment:**
 
-## License
+    - Duplicate the `.env.example` file and rename it to `.env`.
+    - Configure your database settings in the `.env` file.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-# magazine_subscriptions_management
+4. **Generate Application Key:**
+
+    ```bash
+    php artisan key:generate
+    ```
+
+5. **Run Migrations and Seeders:**
+
+    ```bash
+    php artisan migrate
+    php artisan db:seed
+    ```
+
+6. **Start the Development Server:**
+
+    ```bash
+    php artisan serve
+    ```
