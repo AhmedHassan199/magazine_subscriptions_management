@@ -11,11 +11,7 @@ class Subscription extends Model
 
     // Define the fillable fields for the Subscription model
     protected $fillable = [
-        'user_id',
-        'magazine_id',
-        'start_date',
-        'end_date',
-        'is_active',
+        'user_id', 'magazine_id', 'start_date', 'end_date', 'status', 'plan_type', 'renewed'
     ];
 
     // Relationships

@@ -17,6 +17,12 @@ return new class extends Migration
             $table->foreignId('magazine_id')->constrained('magazines')->onDelete('cascade');
             $table->date('start_date');
             $table->date('end_date');
+            $table->enum('status', ['active', 'expired', 'pending'])->default('pending');
+            $table->string('plan_type')->default('monthly');
+            $table->boolean('renewed')->default(false);
+            $table->index('user_id');
+            $table->index('magazine_id');
+
             $table->timestamps();
         });
     }
