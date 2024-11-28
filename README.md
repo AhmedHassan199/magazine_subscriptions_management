@@ -1,25 +1,81 @@
-# Task Management API
+# Magazine Management System
 
-This Laravel RESTful API, named 'Magazine Management System,' allows you to manage magazines, subscriptions, articles, payments, comments, and user authentication, along with other related operations.
+## Features
 
-## Role-Based Access Control (RBAC)
+### 1. User Authentication
+- **Register & Login:** Users can register and log in using token-based authentication via Laravel Sanctum.
 
-### Subscribers
-- Can view magazines and articles.
-- Can create and view comments on articles.
-- Can manage their own subscriptions.
+### 2. Roles and Permissions
+- **Users:**
+  - View magazines, articles, and subscriptions.
+  - Create and manage comments on articles.
+  
+- **Magazines:**
+  - Viewable by users based on their access level.
+  - Managed by publishers or administrators.
+  
+- **Subscriptions:**
+  - Users can subscribe to magazines and manage subscription status.
+  - Admins can view and manage all subscriptions.
+  
+- **Payments:**
+  - Users can make payments for their subscriptions.
+  - Admins can view and manage payment records.
+  
+- **Articles:**
+  - Users can view, create, and update articles.
+  - Admins can approve or reject articles.
+  
+- **Comments:**
+  - Users can comment on articles.
+  - Admins can approve or reject comments.
 
-### Publishers
-- Can create, update, and delete magazines and articles.
-- Can approve comments on their own articles.
+### 3. Database Models (Eloquent Models)
+- Each resource (users, magazines, subscriptions, payments, articles, comments) has a corresponding Eloquent model.
+- **Relationships:**
+  - Magazines -> Articles (One-to-Many)
+  - Users -> Subscriptions (Many-to-Many)
+  - Subscriptions -> Payments (One-to-Many)
+  - Articles -> Comments (One-to-Many)
 
-### Admins
-- Can manage users (create, update, delete).
-- Can approve or reject comments.
-- Can view and create payments.
-- Can view an overview of all subscriptions.
+### 4. Authorization (Policies & Gates)
+- **Publisher:**
+  - Can create and manage magazines, articles, and subscriptions.
+  
+- **Admin:**
+  - Can manage all resources (users, magazines, subscriptions, payments).
+  
+- **User:**
+  - Can view articles, magazines, and manage their subscriptions.
+  - Can comment on articles.
 
----
+### 5. Subscription Management
+- Users can subscribe to magazines with options for monthly or yearly plans.
+- Admins manage subscriptions, approve or renew them.
+
+### 6. Commenting System
+- Users can comment on articles.
+- Admins moderate comments by approving or rejecting them.
+
+### 7. Task Scheduling
+- Tasks are scheduled for subscription management, payment processing, and other periodic operations.
+- Admins can assign tasks based on user roles.
+- Tasks are logged for tracking and activity history.
+
+### 8. Activity Logging
+- All significant actions (e.g., user registration, magazine management, subscription updates) are logged.
+- Logs can be reviewed for auditing and troubleshooting.
+
+### 9. RESTful API
+- **Endpoints:**
+  - Manage magazines, subscriptions, payments, articles, and comments via RESTful API.
+  
+- **Authentication:**
+  - API is secured with Laravel Sanctum for token-based authentication.
+  
+- **Documentation:**
+  - API documentation is available in Postman for easy testing and integration.
+
 
 ## Prerequisites
 
